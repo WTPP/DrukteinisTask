@@ -1,0 +1,75 @@
+﻿<Window x:Class="DrukteinisTask.Views.TicketBuyForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DrukteinisTask.ViewModel"
+        mc:Ignorable="d"
+        Title="Choose which ticket you want to buy" Height="600" Width="600" Background="#2B2B2B" Foreground="White">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <ObjectDataProvider x:Key="TicketBuyViewModelDataProvider" ObjectType="{x:Type local:TicketBuyViewModel}" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid DataContext="{Binding Source={StaticResource TicketBuyViewModelDataProvider}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="0.2*" />
+            <RowDefinition Height="0.3*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="0.3*" />
+            <RowDefinition Height="0.3*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="0.5*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="20" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" >
+            <Button Height="40" Content="Print 4x6 photo ($5)" Command="{Binding AddToBasketCommand}" CommandParameter="{Binding Products[0]}" Style="{StaticResource {x:Type Button}}"/>
+            <Button Height="40" Content="Panorama 6x12 photo ($7)" Command="{Binding AddToBasketCommand}" CommandParameter="{Binding Products[1]}" Style="{StaticResource {x:Type Button}}"/>
+            <Button Height="40" Content="Two 2x6 photo strips ($5)" Command="{Binding AddToBasketCommand}" CommandParameter="{Binding Products[2]}" Style="{StaticResource {x:Type Button}}"/>
+        </StackPanel>
+
+        <TextBlock Text="{Binding ToWinLotteryText}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4"  Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <ListBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" Margin="20" ItemsSource="{Binding BasketItems}"
+         Style="{StaticResource DarkListBoxStyle}"
+         ItemContainerStyle="{StaticResource DarkListBoxItemStyle}" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name}" Width="Auto" Grid.Column="0" Margin="2"/>
+                        <TextBlock Text="{Binding Description}" Grid.Column="1" Margin="2"/>
+                        <TextBlock Text="{Binding Price, StringFormat='{}${0:N2}'}" Grid.Column="2" Margin="2,2,10,2" HorizontalAlignment="Right"/>
+                        <Button Content="Remove" Grid.Column="3" Margin="-2" Command="{Binding DataContext.RemoveItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBlock Text="{Binding BasketSummary}" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4"  Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <Button Content="Pay"
+        Command="{Binding PayCommand}"
+        Width="Auto"
+        Grid.Row="50"
+        Grid.Column="0"
+        Grid.ColumnSpan="4"
+        HorizontalAlignment="Stretch"
+        HorizontalContentAlignment="Center"/>
+    </Grid>
+</Window>

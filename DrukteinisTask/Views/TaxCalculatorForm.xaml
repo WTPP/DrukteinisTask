@@ -1,0 +1,75 @@
+﻿<Window x:Class="DrukteinisTask.Views.TaxCalculatorForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DrukteinisTask.ViewModel"
+        mc:Ignorable="d"
+        Title="Tax Calculator Form" Height="500" Width="700" Background="#2B2B2B" Foreground="White">
+    <Window.DataContext>
+        <local:TaxCalculatorViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <ObjectDataProvider x:Key="TicketBuyViewModelDataProvider" ObjectType="{x:Type local:TicketBuyViewModel}" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+            <TextBlock Text="Date from:" Margin="0,5,10,0"/>
+            <DatePicker x:Name="FromDate" SelectedDate="{Binding FromDate}" Margin="0,2,10,0"/>
+            <TextBlock Text="Date to:" Margin="0,5,10,0"/>
+            <DatePicker x:Name="ToDate" SelectedDate="{Binding ToDate}" Margin="0,2,10,0"/>
+            <Button Width="70" Content="Filter" Command="{Binding FilterCommand}"/>
+        </StackPanel>
+        <ListView ItemContainerStyle="{StaticResource ListViewItemStyle}"
+            Grid.Row="1" ItemsSource="{Binding Transactions}" Margin="10" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{StaticResource ColumnHeaderStyle}">
+                    <GridViewColumn Width="150" Header="Basket ID" DisplayMemberBinding="{Binding BasketId}"/>
+                    <GridViewColumn Width="150" Header="Product Name" DisplayMemberBinding="{Binding ProductName}"/> 
+                    <GridViewColumn Width="70" Header="Quantity" DisplayMemberBinding="{Binding Quantity}"/>
+                    <GridViewColumn Width="100" Header="Sum" DisplayMemberBinding="{Binding Sum}"/>
+                    <GridViewColumn Width="Auto" Header="Date" DisplayMemberBinding="{Binding Date}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10">
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="16"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Transactions count: "/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding TransactionsCount}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Total sum: "/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TotalSum}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Tax sum: "/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding TaxesSum, StringFormat={}{0:F2}}"/>
+
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="Tax rate: "/>
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding TaxRate}"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>
