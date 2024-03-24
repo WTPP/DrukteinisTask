@@ -119,6 +119,7 @@ namespace DrukteinisTask.ViewModel
                                             where t.RecDate >= FromDate && t.RecDate <= ToDate
                                             select new PurchaseDTO
                                             {
+                                                BasketId = t.BasketId,
                                                 ProductName = p.Name,
                                                 Quantity = t.Quantity,
                                                 Sum = t.Sum,
