@@ -1,8 +1,10 @@
 # DrukteinisTask
 
-Clone
-Run DrukteinisTask.sln
-Start DrukteinisTask
+Clone;
+
+Run DrukteinisTask.sln;
+
+Start DrukteinisTask;
 
 
 WPF MVVM, EF Generic Repo, SQLITE
